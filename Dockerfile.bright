@@ -1,0 +1,21 @@
+FROM golang:1.26-alpine3.23
+
+RUN apk add --no-cache build-base git make ca-certificates tzdata
+
+WORKDIR /go/src/app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN make miniflux
+
+EXPOSE 8080
+
+ENV LISTEN_ADDR=0.0.0.0:8080 \
+    RUN_MIGRATIONS=1
+
+USER 65534
+
+CMD ["/go/src/app/miniflux"]
