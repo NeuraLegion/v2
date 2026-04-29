@@ -1,0 +1,30 @@
+FROM golang:1.26.0-bookworm
+
+WORKDIR /go/src/app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        git \
+        make \
+        build-essential \
+        pkg-config \
+        libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN make miniflux
+
+EXPOSE 8080
+
+ENV \
+    LISTEN_ADDR=0.0.0.0:8080 \
+    RUN_MIGRATIONS=1 \
+    LOG_LEVEL=info \
+    LOG_DATE_TIME=1
+
+CMD ["/go/src/app/miniflux"]
