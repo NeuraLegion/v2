@@ -1,0 +1,32 @@
+FROM golang:1.26-alpine AS build
+
+RUN apk add --no-cache build-base git make
+
+WORKDIR /go/src/app
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN sed -i 's#127.0.0.1:8080#0.0.0.0:8080#g' internal/config/options.go \
+ && make miniflux
+
+FROM alpine:3.22
+
+RUN apk add --no-cache ca-certificates tzdata
+
+WORKDIR /app
+
+ENV LISTEN_ADDR=0.0.0.0:8080 \
+    LOG_LEVEL=info \
+    LOG_FILE=stderr \
+    RUN_MIGRATIONS=1 \
+    CREATE_ADMIN=1
+
+EXPOSE 8080
+
+COPY --from=build /go/src/app/miniflux /usr/local/bin/miniflux
+
+USER 65534:65534
+
+CMD ["/usr/local/bin/miniflux"]
