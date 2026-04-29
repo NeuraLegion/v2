@@ -1,0 +1,129 @@
+Development
+Development
+Home > DocumentationWorking with Miniflux&rsquo;s codebase is straightforward:
+Requirements
+Check Out the Source Code
+Compilation
+Remove Precompiled Binaries
+Run the Software Locally
+Linter
+Unit Tests
+Integration Tests
+Build Docker Image
+Create RPM Package
+Create Debian Package
+GitHub Codespaces
+Run a Local PostgreSQL Database with Docker
+Requirements ¶
+Git
+Go >= 1.26
+Check Out the Source Code ¶
+Fork the project and clone the repository locally.
+Miniflux uses Go Modules to manage dependencies.
+Compilation ¶
+Build the application for the current platform:
+make miniflux
+
+To specify a version number:
+make miniflux VERSION=2.0.29
+
+Cross-compilation:
+# Build binaries for all supported platforms
+make build
+
+# Build Linux binary for amd64 architecture
+make linux-amd64
+
+# ARM 64-bit (arm64v8)
+make linux-arm64
+
+# ARM 32-bit variant 7 (arm32v7)
+make linux-armv7
+
+# ARM 32-bit variant 6 (arm32v6)
+make linux-armv6
+
+# ARM 32-bit variant 5 (arm32v5)
+make linux-armv5
+
+# macOS (amd64)
+make darwin-amd64
+
+# macOS (arm64 / Apple Silicon)
+make darwin-arm64
+
+# FreeBSD (amd64)
+make freebsd-amd64
+
+# OpenBSD (amd64)
+make openbsd-amd64
+
+# Windows (amd64)
+make windows-amd64
+
+Remove Precompiled Binaries ¶
+make clean
+
+Run the Software Locally ¶
+make run
+
+This command runs the software in debug mode. If needed, you can run a local PostgreSQL database with Docker.
+Linter ¶
+make lint
+
+Unit Tests ¶
+make test
+
+Integration Tests ¶
+Integration tests validate API endpoints with a real database.
+You need to have PostgreSQL installed locally, preconfigured with the user &ldquo;postgres&rdquo; and the password &ldquo;postgres&rdquo;.
+Alternatively, you can run a local PostgreSQL database with Docker.
+To run integration tests, execute the following command:
+make integration-test ; make clean-integration-test
+
+If the test suite fails, you will see the logs of Miniflux.
+Build Docker Image ¶
+Miniflux supports different architectures for Docker images: amd64, arm32v6, arm32v7, and arm64v8.
+Here is an example to build only the amd64 image:
+make docker-image
+
+Build all images and override the image name:
+make docker-images DOCKER_IMAGE=your-namespace/miniflux
+
+Override the build version:
+make docker-images DOCKER_IMAGE=your-namespace/miniflux VERSION=42
+
+Note that you need to enable Docker experimental features to build multi-platform images.
+Miniflux uses buildx.
+Build RPM Package ¶
+You can build your own RPM package using this command:
+make rpm
+
+Note that Docker is required to generate the RPM package.
+All build operations are performed inside a container.
+Build Debian Package ¶
+You can build your own Debian package using this command:
+make debian
+
+Use the following command to build packages for all supported architectures (amd64, arm64, and armhf):
+make debian-packages
+
+Note that Docker is required to generate the Debian packages.
+All build operations are performed inside a container.
+GitHub Codespaces ¶
+The Miniflux development environment is preconfigured for GitHub Codespaces.
+It is useful for small contributions.
+Click the &ldquo;Create codespace&rdquo; button in the GitHub web UI to create a new development environment in the cloud. Once it&rsquo;s ready, you can use Visual Studio Code to edit the source code.
+Run a Local PostgreSQL Database with Docker ¶
+Based on the PostgreSQL Docker image.
+You can create a local PostgreSQL database for testing easily with the following command:
+docker run --rm --name local-miniflux2-db -p 5432:5432 -e POSTGRES_DB=miniflux2 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+
+To persist data:
+docker volume create local-miniflux2-data
+docker run --rm --name local-miniflux2-db -p 5432:5432 -v local-miniflux2-data:/var/lib/postgresql -e POSTGRES_DB=miniflux2 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres
+
+To delete data:
+docker volume rm local-miniflux2-data
+
+Edit this page

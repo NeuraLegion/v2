@@ -1,0 +1,10 @@
+docker compose --wait failed and port 8080 is not reachable. Original error: Process exited with code 1.
+
+First 30 lines:
+ERR:  Image postgres:18 Pulling 
+ERR:  3531af2bc2a9 Pulling fs layer 0B
+ERR:  4e2103318c3c Pulling fs layer 0B
+ERR:  13f7f91984c8 Pulling fs layer 0B
+ERR:  e9cad8a9e695 Pulling fs layer 0B
+ERR:  56b9e522a2ac Pulling fs layer 0B
+ERR:  c3f159f3b349 Pulling 
