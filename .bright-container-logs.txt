@@ -1,0 +1,8 @@
+=== v2-app-1 ===
+dial tcp: lookup db on 127.0.0.11:53: no such host
+
+=== v2-db-1 ===
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
