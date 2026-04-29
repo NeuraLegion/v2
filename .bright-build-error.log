@@ -1,0 +1,13 @@
+docker compose --wait failed and port 8080 is not reachable. Original error: Process exited with code 1.
+
+First 30 lines:
+ERR:  Image v2-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 495B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.bright
+#2 transferring dockerfile: 880B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata
