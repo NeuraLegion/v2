@@ -1,0 +1,11 @@
+docker compose --wait failed and port 8080 is not reachable. Original error: Process exited with code 1.
+
+Output:
+ERR:  Network v2_default Creating 
+ERR:  Network v2_default Created 
+ERR:  Container v2-db-1 Creating 
+ERR:  Container v2-db-1 Created 
+ERR:  Container v2-app-1 Creating 
+ERR:  Container v2-app-1 Created 
+ERR:  Container v2-db-1 Starting 
+ERR:  Container v2-db-1 
