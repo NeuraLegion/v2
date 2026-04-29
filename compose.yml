@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: miniflux
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: miniflux
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U miniflux"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.bright
+    ports:
+      - "8080:8080"
+    environment:
+      LISTEN_ADDR: 0.0.0.0:8080
+      RAILS_ENV: production
+      NODE_ENV: production
+      DATABASE_URL: postgres://miniflux:secret@db/miniflux?sslmode=disable
+      RUN_MIGRATIONS: "1"
+      CREATE_ADMIN: "1"
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: test123
+      BASE_URL: https://miniflux.example.org
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+volumes:
+  db-data:
