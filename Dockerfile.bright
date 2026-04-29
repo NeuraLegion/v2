@@ -1,0 +1,25 @@
+FROM golang:1.26.0-alpine3.23
+
+RUN apk add --no-cache build-base git make ca-certificates tzdata
+
+WORKDIR /go/src/app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN make miniflux
+
+EXPOSE 8080
+
+ENV LISTEN_ADDR=0.0.0.0:8080 \
+    RUN_MIGRATIONS=1 \
+    CREATE_ADMIN=1 \
+    ADMIN_USERNAME=admin \
+    ADMIN_PASSWORD=test123 \
+    DATABASE_URL=postgres://miniflux:secret@db/miniflux?sslmode=disable
+
+USER 65534
+
+CMD ["/go/src/app/miniflux"]
